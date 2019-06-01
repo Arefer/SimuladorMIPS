@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "Core/io.h"
-#include "Core/structs.h"
 #include "Core/register.h"
 #include "Core/instr_mem.h"
 #include "Core/io.h"

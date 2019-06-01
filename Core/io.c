@@ -1,14 +1,14 @@
-#include "structs.h"
 #include "../Auxiliar/binary_ops.h"
 #include "../Auxiliar/custom_string_ops.h"
 #include "register.h"
 #include "instr_mem.h"
+#include "cpu.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 
-/**
+/*
  * Lee el archivo con el codigo fuente
  * Retorna la memoria de instrucciones (Instr_memory)
  */
@@ -95,7 +95,7 @@ void read_source_code(char* filePath, Cpu* cpu){
             reg = searchRegister(cpu->reg_file, instr->rt);
             strcpy(instr->rt, reg->number);
 
-            // Leer lo que resta de linea (puede haber saltos de linea)
+            // Leer lo que resta de linea (puede haber espacios)
             fscanf(f, "%[^\n]s", aux);
 
             // Leer el salto de linea
@@ -259,7 +259,7 @@ void read_source_code(char* filePath, Cpu* cpu){
             instr->j_address = (char*)malloc(sizeof(char)*(strlen(aux)+1));
             strcpy(instr->j_address, aux);
 
-            // Leer lo que resta de linea (puede haber saltos de linea)
+            // Leer lo que resta de linea (puede haber espacios)
             fscanf(f, "%[^\n]s", aux);
 
             // Leer el salto de linea

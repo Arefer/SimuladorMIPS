@@ -18,7 +18,7 @@ Cpu* init_cpu(){
     cpu->PC = decimal_to_binary(0, 32);
     cpu->reg_file = init_reg_file();
     cpu->instr_memory = init_list();
-    cpu->ram_memory = init_list();
+    cpu->ram_memory = init_ram_mem();
     cpu->executing = init_list();
     return cpu;
 }
@@ -37,7 +37,7 @@ void free_cpu(Cpu* cpu){
     free(cpu->PC);
     free_reg_file(cpu->reg_file);
     free_list(cpu->executing);
-    free_list_and_nodes(cpu->ram_memory, free_mem_data);
+    free_ram_mem(cpu->ram_memory);
     free_list_and_nodes(cpu->instr_memory, free_instr);
     free(cpu);
 }
