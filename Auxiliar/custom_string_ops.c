@@ -92,3 +92,11 @@ void free_splitted(char** splitted, int large){
     }
     free(splitted);
 }
+
+/*
+ * Wrapper de free que recibe un void* y lo castea a char* para liberar su memoria
+ */
+void free_string(void* s){
+    char* string = (char*)s;
+    free(s);
+}

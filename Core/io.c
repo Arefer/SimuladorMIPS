@@ -6,13 +6,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <elf.h>
 
 
 /*
  * Lee el archivo con el codigo fuente
- * Retorna la memoria de instrucciones (Instr_memory)
+ * Los nombres de las instrucciones estan almacenados en constantes (ver archivo instr_mem.h)
  */
-void read_source_code(char* filePath, Cpu* cpu){
+void read_source_code(char* filePath, CPU* cpu){
     // Leer el archivo
     FILE* f = fopen(filePath, "r");
     if (f == NULL){
@@ -42,12 +43,8 @@ void read_source_code(char* filePath, Cpu* cpu){
             // Leer el salto de linea
             fgetc(f);
         }
-        // Tipo R
-        if (strcmp(line, "add") == 0 ||
-            strcmp(line, "sub") == 0 ||
-            strcmp(line, "and") == 0 ||
-            strcmp(line, "or") == 0  ||
-            strcmp(line, "slt") == 0){
+        // Instrucciones add y sub
+        if (strcmp(line, ADD) == 0 || strcmp(line, SUB) == 0){
             Instruction* instr = init_instr();
             instr->line = line_number;
             if (hasLabel == 1){
@@ -67,9 +64,10 @@ void read_source_code(char* filePath, Cpu* cpu){
             // Guardar el tipo
             instr->type = 'R';
             // Guardar el nombre
-            instr->name = (char*)malloc(sizeof(char)*(strlen(line)+1));
-            strcpy(instr->name, line);
-
+            if (strcmp(line, ADD) == 0)
+                instr->name = ADD;
+            else
+                instr->name = SUB;
             // $rd
             instr->rd = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
@@ -105,8 +103,8 @@ void read_source_code(char* filePath, Cpu* cpu){
             add_to_list(cpu->instr_memory, instr, instr->address);
         }
 
-        // Instruccion lw y sw
-        if (strcmp(line, "lw") == 0 || strcmp(line, "sw") == 0){
+        // Instrucciones lw y sw
+        if (strcmp(line, LW) == 0 || strcmp(line, SW) == 0){
             Instruction* instr = init_instr();
             instr->line = line_number;
             if (hasLabel == 1){
@@ -125,8 +123,10 @@ void read_source_code(char* filePath, Cpu* cpu){
             // Guardar el tipo
             instr->type = 'I';
             // Guardar el nombre
-            instr->name = (char*)malloc(sizeof(char)*(strlen(line)+1));
-            strcpy(instr->name, line);
+            if (strcmp(line, LW) == 0)
+                instr->name = LW;
+            else
+                instr->name = SW;
 
             // $rt
             instr->rt = (char*)malloc(sizeof(char)*33);
@@ -163,8 +163,8 @@ void read_source_code(char* filePath, Cpu* cpu){
             add_to_list(cpu->instr_memory, instr, instr->address);
         }
 
-        // Instruccion addi
-        if (strcmp(line, "addi") == 0){
+        // Instrucciones addi y subi
+        if (strcmp(line, ADDI) == 0 || strcmp(line, SUBI) == 0){
             Instruction* instr = init_instr();
             instr->line = line_number;
             if (hasLabel == 1){
@@ -183,8 +183,10 @@ void read_source_code(char* filePath, Cpu* cpu){
             // Guardar el tipo
             instr->type = 'I';
             // Guardar el nombre
-            instr->name = (char*)malloc(sizeof(char)*(strlen(line)+1));
-            strcpy(instr->name, line);
+            if (strcmp(line, ADDI) == 0)
+                instr->name = ADDI;
+            else
+                instr->name = SUBI;
 
             // $rt
             instr->rt = (char*)malloc(sizeof(char)*33);
@@ -215,8 +217,8 @@ void read_source_code(char* filePath, Cpu* cpu){
             add_to_list(cpu->instr_memory, instr, instr->address);
         }
 
-        // Instruccion beq
-        if (strcmp(line, "beq") == 0){
+        // Instrucciones beq y bne
+        if (strcmp(line, BEQ) == 0 || strcmp(line, BNE) == 0){
             Instruction* instr = init_instr();
             instr->line = line_number;
             if (hasLabel == 1){
@@ -235,8 +237,10 @@ void read_source_code(char* filePath, Cpu* cpu){
             // Guardar el tipo
             instr->type = 'I';
             // Guardar el nombre
-            instr->name = (char*)malloc(sizeof(char)*(strlen(line)+1));
-            strcpy(instr->name, line);
+            if (strcmp(line, BEQ) == 0)
+                instr->name = BEQ;
+            else
+                instr->name = BNE;
 
             // $rs
             instr->rs = (char*)malloc(sizeof(char)*33);
@@ -269,7 +273,7 @@ void read_source_code(char* filePath, Cpu* cpu){
         }
 
         // Instruccion j
-        if (strcmp(line, "j") == 0){
+        if (strcmp(line, J) == 0){
             Instruction* instr = init_instr();
             instr->line = line_number;
             if (hasLabel == 1){
@@ -288,8 +292,7 @@ void read_source_code(char* filePath, Cpu* cpu){
             instr->type = 'J';
 
             // Guardar el nombre
-            instr->name = (char*)malloc(sizeof(char)*(strlen(line)+1));
-            strcpy(instr->name, line);
+            instr->name = J;
 
             // address
             fscanf(f, "%s", aux);

@@ -8,5 +8,5 @@
 
 #include "cpu.h"
 
-void read_source_code(char* filePath, Cpu* cpu);
+void read_source_code(char* filePath, CPU* cpu);
 #endif //LAB3_FUNCTIONS_H

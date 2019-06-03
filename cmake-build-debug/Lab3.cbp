@@ -126,9 +126,6 @@
 		<Unit filename="/home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/register.h">
 			<Option target="Lab3"/>
 		</Unit>
-		<Unit filename="/home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/structs.h">
-			<Option target="Lab3"/>
-		</Unit>
 		<Unit filename="/home/kevin/Documents/Organizacion_de_computadores/Lab3/main.c">
 			<Option target="Lab3"/>
 		</Unit>

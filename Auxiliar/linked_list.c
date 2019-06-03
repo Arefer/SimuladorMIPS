@@ -4,7 +4,7 @@
 
 #include "linked_list.h"
 #include <stdlib.h>
-
+#include <string.h>
 /*
  * Inicializa una lista enlazada
  */
@@ -28,7 +28,7 @@ Node* init_node(void* data, char* id){
 }
 
 /*
- * Añade un elemento a la lista
+ * Añade un elemento al final de la lista
  */
 void add_to_list(List* list, void* data, char* id){
     // Creamos el nodo con la informacion
@@ -44,6 +44,39 @@ void add_to_list(List* list, void* data, char* id){
 }
 
 /*
+ * Añade un elemento al principio de la lista
+ */
+void push_to_list(List* list, void* data, char* id){
+    // Creamos el nodo con la información
+    Node* n = init_node(data, id);
+    if (list->length == 0){
+        list->first = n;
+        list->last = n;
+    } else {
+        Node* aux = list->first;
+        list->first = n;
+        n->next = aux;
+    }
+    list->length += 1;
+}
+
+/*
+ * Extrae el ultimo elemento de la lista (libera el nodo pero no su informacion)
+ */
+void* pop_from_list(List* list){
+    Node* last = list->last;
+    Node* cursor = list->first;
+    while (cursor->next != list->last){
+        cursor = cursor->next;
+    }
+    list->last = cursor;
+    void* data = last->data;
+    free(last->id);
+    free(last);
+    return data;
+}
+
+/*
  * Itera sobre la lista y aplica la funcion especificada
  */
 void iterate(List* list, void (*f)(void*)){
@@ -52,6 +85,20 @@ void iterate(List* list, void (*f)(void*)){
         (*f)(cursor->data);
         cursor = cursor->next;
     }
+}
+
+/*
+ * Busca un elemento en la lista
+ */
+void* find(List* list, char* id){
+    Node* cursor = list->first;
+    while (cursor != NULL){
+        if (strcmp(cursor->id, id) == 0){
+            return cursor->data;
+        }
+        cursor = cursor->next;
+    }
+    return NULL;
 }
 
 /*
