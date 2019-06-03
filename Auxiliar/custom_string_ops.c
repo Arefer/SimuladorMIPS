@@ -98,5 +98,5 @@ void free_splitted(char** splitted, int large){
  */
 void free_string(void* s){
     char* string = (char*)s;
-    free(s);
+    free(string);
 }
