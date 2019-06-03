@@ -3,6 +3,8 @@
 //
 
 #include "instr_mem.h"
+#include "../Auxiliar/custom_string_ops.h"
+#include "cpu.h"
 
 
 // Definicion de nombres de las instrucciones
@@ -25,9 +27,9 @@ Instruction *init_instr() {
     instr->address = NULL;
     instr->name = NULL;
     instr->type = 0;
-    instr->rs = NULL;
-    instr->rt = NULL;
-    instr->rd = NULL;
+    instr->rs = -1;
+    instr->rt = -1;
+    instr->rd = -1;
     instr->immediate = 0;
     instr->j_address = NULL;
     instr->label = NULL;
@@ -57,34 +59,37 @@ Instruction* search_by_label(List* instr_mem, char* label){
     return NULL;
 }
 
-/**
- * Imprime por pantalla los campos de una instruccion
+
+/*
+ * Imprime una instruccion, mostrando nombres de los registros, en vez de sus numeros
  */
-void print_instr(void* instruction){
-    Instruction* instr = (Instruction*) instruction;
-    printf("Line: %d ", instr->line);
+void print_instr(Instruction* instr, Register** reg_file){
+    Register* rs;
+    Register* rt;
+    Register* rd;
+    printf("Linea %d: ", instr->line);
     if (instr->type == 'R'){
-        // printf("Label: %s", instr->label);
-        // printf(" Address: %s", instr->address);
-        // printf(" Nombre: %s", instr->name);
-        // printf(" rs: |%s|", instr->rs);
-        // printf(" rt: |%s|", instr->rt);
-        // printf(" rd: |%s|", instr->rd);
-    } else if (instr->type == 'I'){
-        printf("Label: %s", instr->label);
-        printf(" Address: %s", instr->address);
-        printf(" Nombre: %s", instr->name);
-        printf(" rs: %s", instr->rs);
-        printf(" rt: %s", instr->rt);
-        printf(" Immediate: %d", instr->immediate);
+        rs = reg_file[instr->rs];
+        rt = reg_file[instr->rt];
+        rd = reg_file[instr->rd];
+        printf("%s %s, %s, %s\n", instr->name, rd->name, rs->name, rt->name);
+    } else if (strcmp(instr->name, LW) == 0 || strcmp(instr->name, SW) == 0){
+        rs = reg_file[instr->rs];
+        rt = reg_file[instr->rt];
+        printf("%s %s, %d(%s)\n", instr->name, rt->name, instr->immediate, rs->name);
+    } else if (strcmp(instr->name, BNE) == 0 || strcmp(instr->name, BEQ) == 0){
+        rs = reg_file[instr->rs];
+        rt = reg_file[instr->rt];
+        printf("%s %s, %s, %s\n", instr->name, rt->name, rs->name, instr->j_address);
+    } else if (strcmp(instr->name, ADDI) == 0 || strcmp(instr->name, SUBI) == 0) {
+        rs = reg_file[instr->rs];
+        rt = reg_file[instr->rt];
+        printf("%s %s, %s, %d\n", instr->name, rt->name, rs->name, instr->immediate);
     } else if (instr->type == 'J'){
-        printf("Label: %s", instr->label);
-        printf(" Address: %s", instr->address);
-        printf(" Nombre: %s", instr->name);
-        printf(" j_address: %s", instr->j_address);
+        printf("%s %s\n", instr->name, instr->j_address);
     }
-    printf("\n");
 }
+
 
 /*
  * Libera la memoria de una instruccion (Instruction)
@@ -93,13 +98,6 @@ void free_instr(void* instruction){
     Instruction* instr = (Instruction*) instruction;
     if (instr->address != NULL)
         free(instr->address);
-    // free(instr->name);
-    if (instr->rs != NULL)
-        free(instr->rs);
-    if (instr->rt != NULL)
-        free(instr->rt);
-    if (instr->rd != NULL)
-        free(instr->rd);
     if (instr->j_address != NULL)
         free(instr->j_address);
     if (instr->label != NULL)

@@ -16,30 +16,15 @@
 enum stages{IF, ID, EX1, EX2, MEM, WB};
 typedef enum {NO, YES} ACTIVE_HAZARD;
 
-struct main_alu{
-    char* op1;
-    char* op2;
-    int zero;
-};
-typedef struct main_alu Main_alu;
-
-struct jump_alu{
-    char* op1;
-    char* op2;
-    int enabled;
-};
-typedef struct jump_alu J_alu;
-
 struct cpu{
     int cc;  // Clock count
     char* PC;  // Program Counter
     List* instr_memory;
-    Reg_file* reg_file;
-    Main_alu* main_alu;
-    J_alu* j_alu;
+    Register** reg_file;
+    int jump_alu_enabled;
     Ram* ram_memory;
     Instruction** executing;  // 6 Etapas de Pipeline
-    char* hazard;  // Nombre del registro pendiente por escribir
+    int hazard;  // Numero del registro pendiente por escribir
     ACTIVE_HAZARD true_dependency;
     Instruction* NOP;
 };
@@ -51,6 +36,7 @@ void instruction_fetch(CPU* CPU);
 void write_back_and_decode(CPU* CPU);
 void ex1(CPU* CPU);
 void ex2(CPU* CPU);
+void mem(CPU* CPU);
 void print_instr_mem(CPU* cpu);
 void free_cpu(CPU* cpu);
 

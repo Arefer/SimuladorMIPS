@@ -29,7 +29,7 @@ CPU* init_cpu(){
     cpu->executing[EX2] = cpu->NOP;
     cpu->executing[MEM] = cpu->NOP;
     cpu->executing[WB] = cpu->NOP;
-    cpu->hazard = NULL;
+    cpu->hazard = -1;
     return cpu;
 }
 
@@ -71,34 +71,35 @@ void instruction_fetch(CPU* CPU){
 void write_back_and_decode(CPU* CPU){
     // Write Back
     Instruction* wb_instr = CPU->executing[WB];
-    Register* rs = searchRegister(CPU->reg_file, wb_instr->rs);
-    Register* rt = searchRegister(CPU->reg_file, wb_instr->rt);
-    Register* rd = searchRegister(CPU->reg_file, wb_instr->rd);
+    Register* rs = CPU->reg_file[wb_instr->rs];
+    Register* rt = CPU->reg_file[wb_instr->rt];
+    Register* rd = CPU->reg_file[wb_instr->rd];
     if (strcmp(wb_instr->name, LW) == 0){
         free(rt->data);
+        rt->data = (char*)malloc(sizeof(char)*33);
         char* read_data = (char*)pop_from_list(CPU->ram_memory->read_data);
         strcpy(rt->data, read_data);
         free(read_data);
-        if (strcmp(wb_instr->rt, CPU->hazard) == 0)
+        if (wb_instr->rt == CPU->hazard)
             CPU->true_dependency = NO;
     } else if (strcmp(wb_instr->name, SUB) == 0){
         // $rd = $rs - $rt
         free(rd->data);
         rd->data = two_binary_rest(rs->data, rt->data);
-        if (strcmp(wb_instr->rd, CPU->hazard) == 0)
+        if (wb_instr->rd == CPU->hazard)
             CPU->true_dependency = NO;
     } else if ((strcmp(wb_instr->name, ADD) == 0)){
         // $rd = $rs + $rt
         free(rd->data);
         rd->data = two_binary_sum(rs->data, rt->data);
-        if (strcmp(wb_instr->rd, CPU->hazard) == 0)
+        if (wb_instr->rd == CPU->hazard)
             CPU->true_dependency = NO;
     }else if ((strcmp(wb_instr->name, ADDI) == 0) || (strcmp(wb_instr->name, SUBI) == 0)){
         // $rs + Immediate = $rt
         int decimal_rs = binary_to_decimal(rs->data);
         free(rt->data);
         rt->data = decimal_to_binary(decimal_rs + wb_instr->immediate, 32);
-        if (strcmp(wb_instr->rt, CPU->hazard) == 0)
+        if (wb_instr->rt == CPU->hazard)
             CPU->true_dependency = NO;
     }
 
@@ -108,7 +109,7 @@ void write_back_and_decode(CPU* CPU){
     Instruction* id_instr = CPU->executing[ID];
     if ((strcmp(id_instr->name, ADD) == 0) || (strcmp(id_instr->name, SUB) == 0)) {
         // Si el campo rt o rs de la instruccion en ID es igual a hazard, entonces hay un riesgo de datos
-        if ((strcmp(id_instr->rs, CPU->hazard) == 0) || (strcmp(id_instr->rt, CPU->hazard) == 0)) {
+        if (id_instr->rs == CPU->hazard || id_instr->rt == CPU->hazard) {
             CPU->true_dependency = YES;
         } else {  // Si no es el caso, indicamos que el registro rd queda pendiente por escribir
             CPU->hazard = id_instr->rd;
@@ -116,13 +117,13 @@ void write_back_and_decode(CPU* CPU){
 
     } else if ((strcmp(id_instr->name, BEQ) == 0) || (strcmp(id_instr->name, BNE) == 0)){
         // Si el campo rt o rs de la instruccion en ID es igual a hazard, entonces hay un riesgo de datos
-        if ((strcmp(id_instr->rs, CPU->hazard) == 0) || (strcmp(id_instr->rt, CPU->hazard) == 0))
+        if (id_instr->rs == CPU->hazard || id_instr->rt == CPU->hazard)
             CPU->true_dependency = YES;
 
     } else if ((strcmp(id_instr->name, ADDI) == 0) || (strcmp(id_instr->name, SUBI) == 0)
             || (strcmp(id_instr->name, LW) == 0) || (strcmp(id_instr->name, SW) == 0)) {
         // Si el campo rs de la instruccion en ID es igual a hazard, entonces hay un riesgo de datos
-        if (strcmp(id_instr->rs, CPU->hazard) == 0){
+        if (id_instr->rs == CPU->hazard){
             CPU->true_dependency = YES;
         } else {  // Si no es el caso, indicamos que el registro rt queda pendiente por escribir
             CPU->hazard = id_instr->rt;
@@ -140,26 +141,26 @@ void ex1(CPU* CPU){
     Instruction* instr = CPU->executing[EX1];
     if (strcmp(instr->name, LW) == 0) {
         // $rs + Immediate para calcular la direccion del dato a cargar
-        Register* rs = searchRegister(CPU->reg_file, instr->rs);
+        Register* rs = CPU->reg_file[instr->rs];
         int decimal_rs = binary_to_decimal(rs->data);
         int decimal_addr = decimal_rs + instr->immediate;
         CPU->ram_memory->addr = decimal_to_binary(decimal_addr, 32);
     } else if (strcmp(instr->name, SW) == 0){
         // $rs + Immediate para calcular la direccion del dato a escribir
-        Register* rs = searchRegister(CPU->reg_file, instr->rs);
+        Register* rs = CPU->reg_file[instr->rs];
         int decimal_rs = binary_to_decimal(rs->data);
         int decimal_addr = decimal_rs + instr->immediate;
         CPU->ram_memory->addr = decimal_to_binary(decimal_addr, 32);
         // Indicamos que el dato a escribir es el dato almacenado en el rt de la instruccion
-        Register* rt = searchRegister(CPU->reg_file, instr->rt);
+        Register* rt = CPU->reg_file[instr->rt];
         CPU->ram_memory->write_data = rt->data;
     } else if (strcmp(instr->name, BEQ) == 0){
         // Comparamos los campos rs con rt de la instruccion
-        Register* rs = searchRegister(CPU->reg_file, instr->rs);
-        Register* rt = searchRegister(CPU->reg_file, instr->rt);
+        Register* rs = CPU->reg_file[instr->rs];
+        Register* rt = CPU->reg_file[instr->rt];
         // Si son iguales, activamos la jump_alu (simula un multiplexor)
         if (strcmp(rs->data, rt->data) == 0){
-            CPU->j_alu->enabled = 1;
+            CPU->jump_alu_enabled = 1;
             // Como se hizo el branch, es necesario vaciar las instrucciones erroneamente leidas
             CPU->executing[IF] = CPU->NOP;
             CPU->executing[ID] = CPU->NOP;
@@ -168,11 +169,11 @@ void ex1(CPU* CPU){
         }
     } else if (strcmp(instr->name, BNE) == 0){
         // Comparamos los campos rs con rt de la instruccion
-        Register* rs = searchRegister(CPU->reg_file, instr->rs);
-        Register* rt = searchRegister(CPU->reg_file, instr->rt);
+        Register* rs = CPU->reg_file[instr->rs];
+        Register* rt = CPU->reg_file[instr->rt];
         // Si no son iguales, activamos la jump_alu (simula un multiplexor)
         if (strcmp(rs->data, rt->data) != 0){
-            CPU->j_alu->enabled = 1;
+            CPU->jump_alu_enabled = 1;
             // Como se hizo el branch, es necesario vaciar las instrucciones erroneamente leidas
             CPU->executing[IF] = CPU->NOP;
             CPU->executing[ID] = CPU->NOP;
@@ -186,7 +187,7 @@ void ex1(CPU* CPU){
  * Simula la etapa de operacion de la ALU que calcula direcciones de los saltos (EX2)
  */
 void ex2(CPU* CPU){
-    if (CPU->j_alu->enabled == 1){
+    if (CPU->jump_alu_enabled == 1){
         Instruction* instr = CPU->executing[EX2];
         // Instruccion j
         if (strcmp(instr->name, J) == 0){
@@ -221,8 +222,8 @@ void ex2(CPU* CPU){
         } else if (strcmp(instr->name, BEQ) == 0 || strcmp(instr->name, BNE) == 0){
             // Si el immediate de la instruccion es un numero
             if (is_number(instr->j_address) == 1){
-                // Se lo sumamos al PC
-                char* imm_32 = sign_extend(instr->j_address, 32);
+                // Lo multiplicamos por 4 y se lo sumamos al PC
+                char* imm_32 = decimal_to_binary(binary_to_decimal(instr->j_address)*4, 32);
                 char* current_PC = (char*)malloc(sizeof(char)*33);
                 strcpy(current_PC, CPU->PC);
                 free(CPU->PC);
@@ -252,13 +253,18 @@ void mem(CPU* CPU){
         write_to_ram(CPU->ram_memory);
     }
 }
+
+
 /*
- * Imprime la memoria de instrucciones
+ *
  */
 void print_instr_mem(CPU* cpu){
-    iterate(cpu->instr_memory, print_instr);
+    Node* current_instr = cpu->instr_memory->first;
+    while (current_instr != NULL){
+        print_instr((Instruction*)current_instr->data,cpu->reg_file);
+        current_instr = current_instr->next;
+    }
 }
-
 /*
  * Libera la memoria utilizada por el procesador
  */

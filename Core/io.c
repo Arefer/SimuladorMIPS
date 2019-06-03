@@ -60,7 +60,6 @@ void read_source_code(char* filePath, CPU* cpu){
             }
 
             char* aux = (char*)malloc(sizeof(char)*300);
-            Register* reg;
             // Guardar el tipo
             instr->type = 'R';
             // Guardar el nombre
@@ -69,29 +68,26 @@ void read_source_code(char* filePath, CPU* cpu){
             else
                 instr->name = SUB;
             // $rd
-            instr->rd = (char*)malloc(sizeof(char)*33);
+            char* rd = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitarle la coma final y guardarlo
-            memcpy(instr->rd, aux, strlen(aux)-1);
-            reg = searchRegister(cpu->reg_file, instr->rd);
-            strcpy(instr->rd, reg->number);
+            memcpy(rd, aux, strlen(aux)-1);
+            instr->rd = search_register(cpu->reg_file, rd);
+            free(rd);
 
             // $rs
-            instr->rs = (char*)malloc(sizeof(char)*33);
+            char* rs = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitarle la coma final y guardarlo
-            memcpy(instr->rs, aux, strlen(aux)-1);
+            memcpy(rs, aux, strlen(aux)-1);
             // Buscamos el registro por su nombre
-            reg = searchRegister(cpu->reg_file, instr->rs);
-            strcpy(instr->rs, reg->number);
+            instr->rs = search_register(cpu->reg_file, rs);
+            free(rs);
 
             // $rt
-            instr->rt = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitarle el salto de linea al final y guardarlo
-            memcpy(instr->rt, aux, strlen(aux));
-            reg = searchRegister(cpu->reg_file, instr->rt);
-            strcpy(instr->rt, reg->number);
+            instr->rt = search_register(cpu->reg_file, aux);
 
             // Leer lo que resta de linea (puede haber espacios)
             fscanf(f, "%[^\n]s", aux);
@@ -119,7 +115,6 @@ void read_source_code(char* filePath, CPU* cpu){
                 instr->address = binary_sum(last->address, 4, 32);
             }
             char* aux = (char*)malloc(sizeof(char)*300);
-            Register* reg;
             // Guardar el tipo
             instr->type = 'I';
             // Guardar el nombre
@@ -129,12 +124,12 @@ void read_source_code(char* filePath, CPU* cpu){
                 instr->name = SW;
 
             // $rt
-            instr->rt = (char*)malloc(sizeof(char)*33);
+            char* rt = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitar la coma
-            memcpy(instr->rt, aux, strlen(aux)-1);
-            reg = searchRegister(cpu->reg_file, instr->rt);
-            strcpy(instr->rt, reg->number);
+            memcpy(rt, aux, strlen(aux)-1);
+            instr->rt = search_register(cpu->reg_file, rt);
+            free(rt);
             
             // Immediate
             // Leer hasta encontrar un parentesis
@@ -148,11 +143,10 @@ void read_source_code(char* filePath, CPU* cpu){
             fgetc(f);
 
             // $rs
-            instr->rs = (char*)malloc(sizeof(char)*33);
             // Leer hasta encontrar un parentesis
             fscanf(f, "%[^)]s", aux);
-            reg = searchRegister(cpu->reg_file, aux);
-            strcpy(instr->rs, reg->number);
+            instr->rs = search_register(cpu->reg_file, aux);
+
 
             // Leer lo que resta de linea (puede haber espacios)
             fscanf(f, "%[^\n]s", aux);
@@ -179,7 +173,6 @@ void read_source_code(char* filePath, CPU* cpu){
                 instr->address = binary_sum(last->address, 4, 32);
             }
             char* aux = (char*)malloc(sizeof(char)*300);
-            Register* reg;
             // Guardar el tipo
             instr->type = 'I';
             // Guardar el nombre
@@ -189,20 +182,20 @@ void read_source_code(char* filePath, CPU* cpu){
                 instr->name = SUBI;
 
             // $rt
-            instr->rt = (char*)malloc(sizeof(char)*33);
+            char* rt = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitar la coma
-            memcpy(instr->rt, aux, strlen(aux)-1);
-            reg = searchRegister(cpu->reg_file, instr->rt);
-            strcpy(instr->rt, reg->number);
+            memcpy(rt, aux, strlen(aux)-1);
+            instr->rt = search_register(cpu->reg_file, rt);
+            free(rt);
 
             // $rs
-            instr->rs = (char*)malloc(sizeof(char)*33);
+            char* rs = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitar la coma
-            memcpy(instr->rs, aux, strlen(aux)-1);
-            reg = searchRegister(cpu->reg_file, instr->rs);
-            strcpy(instr->rs, reg->number);
+            memcpy(rs, aux, strlen(aux)-1);
+            instr->rs = search_register(cpu->reg_file, rs);
+            free(rs);
 
             // Immediate
             fscanf(f, "%s", aux);
@@ -233,7 +226,6 @@ void read_source_code(char* filePath, CPU* cpu){
                 instr->address = binary_sum(last->address, 4, 32);
             }
             char* aux = (char*)malloc(sizeof(char)*300);
-            Register* reg;
             // Guardar el tipo
             instr->type = 'I';
             // Guardar el nombre
@@ -243,20 +235,20 @@ void read_source_code(char* filePath, CPU* cpu){
                 instr->name = BNE;
 
             // $rs
-            instr->rs = (char*)malloc(sizeof(char)*33);
+            char* rs = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitar la coma
-            memcpy(instr->rs, aux, strlen(aux)-1);
-            reg = searchRegister(cpu->reg_file, instr->rs);
-            strcpy(instr->rs, reg->number);
+            memcpy(rs, aux, strlen(aux)-1);
+            instr->rs = search_register(cpu->reg_file, rs);
+            free(rs);
 
             // $rt
-            instr->rt = (char*)malloc(sizeof(char)*33);
+            char* rt = (char*)malloc(sizeof(char)*33);
             fscanf(f, "%s", aux);
             // Quitar la coma
-            memcpy(instr->rt, aux, strlen(aux)-1);
-            reg = searchRegister(cpu->reg_file, instr->rt);
-            strcpy(instr->rt, reg->number);
+            memcpy(rt, aux, strlen(aux)-1);
+            instr->rt = search_register(cpu->reg_file, rt);
+            free(rt);
 
             // Immediate
             fscanf(f, "%s", aux);
