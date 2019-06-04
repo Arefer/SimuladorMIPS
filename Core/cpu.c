@@ -30,6 +30,7 @@ CPU* init_cpu(){
     cpu->executing[MEM] = cpu->NOP;
     cpu->executing[WB] = cpu->NOP;
     cpu->hazard = -1;
+    cpu->bubbles = 0;
     return cpu;
 }
 
@@ -49,63 +50,34 @@ void add_to_pipeline(CPU* p, Instruction* instr, const int stage){
 
 /*
  * Simula la etapa de instruction fetch (IF).
- * Busca la instruccion apuntada por el PC en la memoria de instrucciones
+ * Busca la instruccion apuntada por el PC en la memoria de instrucciones y la añade a IF.
+ * Si no encuentra una instruccion, añade un NOP
+ * Actualiza el valor del PC. PC = PC + 4.
  */
 void instruction_fetch(CPU* CPU){
-    // Si no hay riesgo de datos activo
-    if (CPU->true_dependency == NO) {
-        // Buscar la instruccion
-        Instruction *instr = (Instruction *) find(CPU->instr_memory, CPU->PC);
+    // Buscar la instruccion
+    Instruction* instr = (Instruction*)find(CPU->instr_memory, CPU->PC);
+    // Si no encuentro instruccion, decir que es un NOP
+    if (instr == NULL) instr = CPU->NOP;
+    // Hacer IF solamente si es que no hay data hazard
+    if (CPU->true_dependency == NO){
         add_to_pipeline(CPU, instr, IF);
-        // PC = PC+4
-        char* PC = two_binary_sum(CPU->PC, decimal_to_binary(4, 32));
+        // Aumentar el PC
+        char* current_PC = (char*)malloc(sizeof(char)*33);
+        strcpy(current_PC, CPU->PC);
         free(CPU->PC);
-        CPU->PC = PC;
+        CPU->PC = binary_sum(current_PC, 4, 32);
+        free(current_PC);
     }
+
 }
 
 /*
- * Simula las etapas de instruction decode (ID) y write back (WB).
- * Se mezclan estas etapas para asegurar que se escriba primero antes de acceder al archivo de registros.
+ * Simula las etapa de instruction decode (ID).
+ * Como el Decode en este simulador se hace al momento de leer el archivo con el codigo fuente, en esta
+ * etapa solo se identifica si es que existe un data hazard.
  */
-void write_back_and_decode(CPU* CPU){
-    // Write Back
-    Instruction* wb_instr = CPU->executing[WB];
-    Register* rs = CPU->reg_file[wb_instr->rs];
-    Register* rt = CPU->reg_file[wb_instr->rt];
-    Register* rd = CPU->reg_file[wb_instr->rd];
-    if (strcmp(wb_instr->name, LW) == 0){
-        free(rt->data);
-        rt->data = (char*)malloc(sizeof(char)*33);
-        char* read_data = (char*)pop_from_list(CPU->ram_memory->read_data);
-        strcpy(rt->data, read_data);
-        free(read_data);
-        if (wb_instr->rt == CPU->hazard)
-            CPU->true_dependency = NO;
-    } else if (strcmp(wb_instr->name, SUB) == 0){
-        // $rd = $rs - $rt
-        free(rd->data);
-        rd->data = two_binary_rest(rs->data, rt->data);
-        if (wb_instr->rd == CPU->hazard)
-            CPU->true_dependency = NO;
-    } else if ((strcmp(wb_instr->name, ADD) == 0)){
-        // $rd = $rs + $rt
-        free(rd->data);
-        rd->data = two_binary_sum(rs->data, rt->data);
-        if (wb_instr->rd == CPU->hazard)
-            CPU->true_dependency = NO;
-    }else if ((strcmp(wb_instr->name, ADDI) == 0) || (strcmp(wb_instr->name, SUBI) == 0)){
-        // $rs + Immediate = $rt
-        int decimal_rs = binary_to_decimal(rs->data);
-        free(rt->data);
-        rt->data = decimal_to_binary(decimal_rs + wb_instr->immediate, 32);
-        if (wb_instr->rt == CPU->hazard)
-            CPU->true_dependency = NO;
-    }
-
-
-    // Como en este simulador, el decode se hace al momento de leer las instrucciones, en
-    // esta funcion solo identificaremos si existe un data hazard
+void instruction_decode(CPU* CPU){
     Instruction* id_instr = CPU->executing[ID];
     if ((strcmp(id_instr->name, ADD) == 0) || (strcmp(id_instr->name, SUB) == 0)) {
         // Si el campo rt o rs de la instruccion en ID es igual a hazard, entonces hay un riesgo de datos
@@ -130,8 +102,11 @@ void write_back_and_decode(CPU* CPU){
         }
     }
 
-    // Añadir burbuja en caso de data hazard
-    if (CPU->true_dependency == YES) add_to_pipeline(CPU, CPU->NOP, EX1);
+    // En caso de data hazard, añadir burbuja en la etapa EX1
+    if (CPU->true_dependency == YES) {
+        add_to_pipeline(CPU, CPU->NOP, EX1);
+        CPU->bubbles += 1;
+    }
 }
 
 /*
@@ -139,21 +114,28 @@ void write_back_and_decode(CPU* CPU){
  */
 void ex1(CPU* CPU){
     Instruction* instr = CPU->executing[EX1];
+    // Si la instruccion es LW, la ALU principal calcula la direccion del dato en memoria a cargar
     if (strcmp(instr->name, LW) == 0) {
         // $rs + Immediate para calcular la direccion del dato a cargar
         Register* rs = CPU->reg_file[instr->rs];
         int decimal_rs = binary_to_decimal(rs->data);
         int decimal_addr = decimal_rs + instr->immediate;
+        if (CPU->ram_memory->addr != NULL) free(CPU->ram_memory->addr);
         CPU->ram_memory->addr = decimal_to_binary(decimal_addr, 32);
+    // Si la instruccion es SW, la ALU principal calcula la direccion donde se escribira el dato en memoria
     } else if (strcmp(instr->name, SW) == 0){
         // $rs + Immediate para calcular la direccion del dato a escribir
         Register* rs = CPU->reg_file[instr->rs];
         int decimal_rs = binary_to_decimal(rs->data);
         int decimal_addr = decimal_rs + instr->immediate;
+        if (CPU->ram_memory->addr != NULL) free(CPU->ram_memory->addr);
         CPU->ram_memory->addr = decimal_to_binary(decimal_addr, 32);
         // Indicamos que el dato a escribir es el dato almacenado en el rt de la instruccion
         Register* rt = CPU->reg_file[instr->rt];
+        if (CPU->ram_memory->write_data != NULL) free(CPU->ram_memory->write_data);
         CPU->ram_memory->write_data = rt->data;
+    // Si la instruccion es BEQ, la ALU principal compara los campos rs y rt para habilitar la ALU que
+    // calcula la direccion del jump
     } else if (strcmp(instr->name, BEQ) == 0){
         // Comparamos los campos rs con rt de la instruccion
         Register* rs = CPU->reg_file[instr->rs];
@@ -164,9 +146,13 @@ void ex1(CPU* CPU){
             // Como se hizo el branch, es necesario vaciar las instrucciones erroneamente leidas
             CPU->executing[IF] = CPU->NOP;
             CPU->executing[ID] = CPU->NOP;
+            CPU->bubbles += 2;
             // Ademas, como la instruccion que le precede esta en MEM, en 2 ciclos mas es imposible un data hazard
             CPU->true_dependency = NO;
+            CPU->hazard = -1;
         }
+    // Si la instruccion es BNE, la ALU principal compara los campos rs y rt para habilitar la ALU que
+    // calcula la direccion del jump
     } else if (strcmp(instr->name, BNE) == 0){
         // Comparamos los campos rs con rt de la instruccion
         Register* rs = CPU->reg_file[instr->rs];
@@ -177,8 +163,10 @@ void ex1(CPU* CPU){
             // Como se hizo el branch, es necesario vaciar las instrucciones erroneamente leidas
             CPU->executing[IF] = CPU->NOP;
             CPU->executing[ID] = CPU->NOP;
+            CPU->bubbles += 2;
             // Ademas, como la instruccion que le precede esta en MEM, en 2 ciclos mas es imposible un data hazard
             CPU->true_dependency = NO;
+            CPU->hazard = -1;
         }
     }
 }
@@ -212,7 +200,7 @@ void ex2(CPU* CPU){
                 free(binary_32);
             } else {  // Si es una etiqueta
                 // Buscamos la instruccion con dicha etiqueta en la memoria de instrucciones
-                Instruction* j_instr = search_by_label(CPU->instr_memory, instr->label);
+                Instruction* j_instr = search_by_label(CPU->instr_memory, instr->j_address);
                 // Actualizamos el valor del PC por la direccion de la instruccion con la etiqueta
                 free(CPU->PC);
                 CPU->PC = (char*)malloc(sizeof(char)*33);
@@ -232,7 +220,7 @@ void ex2(CPU* CPU){
                 free(current_PC);
             } else {  // Si es una etiqueta
                 // Buscamos la instruccion con dicha etiqueta en la memoria de instrucciones
-                Instruction* j_instr = search_by_label(CPU->instr_memory, instr->label);
+                Instruction* j_instr = search_by_label(CPU->instr_memory, instr->j_address);
                 // Actualizamos el valor del PC por la direccion de la instruccion con la etiqueta
                 free(CPU->PC);
                 CPU->PC = (char*)malloc(sizeof(char)*33);
@@ -254,14 +242,163 @@ void mem(CPU* CPU){
     }
 }
 
+void write_back(CPU* CPU){
+    // Write Back
+    Instruction* wb_instr = CPU->executing[WB];
+    Register* rs;
+    Register* rt;
+    Register* rd;
+    if (strcmp(wb_instr->name, LW) == 0){
+        rt = CPU->reg_file[wb_instr->rt];
+        free(rt->data);
+        rt->data = (char*)malloc(sizeof(char)*33);
+        // Copiar el dato almacenado en read_data de la memoria ram, en el registro rt
+        char* read_data = (char*)pop_from_list(CPU->ram_memory->read_data);
+        strcpy(rt->data, read_data);
+        free(read_data);
+        // Si el registro rt estaba ocasionando una dependencia (data hazard), indicar que ya se
+        // satisfizo
+        if (wb_instr->rt == CPU->hazard){
+            CPU->true_dependency = NO;
+            CPU->hazard = -1;
+            // printf("Data Hazard solucionado con %d burbujas\n", CPU->bubbles);
+            CPU->bubbles = 0;
+        }
+    } else if (strcmp(wb_instr->name, SUB) == 0){
+        rs = CPU->reg_file[wb_instr->rs];
+        rt = CPU->reg_file[wb_instr->rt];
+        rd = CPU->reg_file[wb_instr->rd];
+        // $rd = $rs - $rt
+        free(rd->data);
+        rd->data = two_binary_rest(rs->data, rt->data);
+        // Si el registro rd estaba ocasionando una dependencia (data hazard), indicar que ya se
+        // satisfizo
+        if (wb_instr->rd == CPU->hazard){
+            CPU->true_dependency = NO;
+            CPU->hazard = -1;
+            // printf("Data Hazard solucionado con %d burbujas\n", CPU->bubbles);
+            CPU->bubbles = 0;
+        }
+    } else if ((strcmp(wb_instr->name, ADD) == 0)){
+        rs = CPU->reg_file[wb_instr->rs];
+        rt = CPU->reg_file[wb_instr->rt];
+        rd = CPU->reg_file[wb_instr->rd];
+        // $rd = $rs + $rt
+        free(rd->data);
+        rd->data = two_binary_sum(rs->data, rt->data);
+        // Si el registro rd estaba ocasionando una dependencia (data hazard), indicar que ya se
+        // satisfizo
+        if (wb_instr->rd == CPU->hazard){
+            CPU->true_dependency = NO;
+            CPU->hazard = -1;
+            // printf("Data Hazard solucionado con %d burbujas\n", CPU->bubbles);
+            CPU->bubbles = 0;
+        }
+    }else if ((strcmp(wb_instr->name, ADDI) == 0) || (strcmp(wb_instr->name, SUBI) == 0)){
+        rs = CPU->reg_file[wb_instr->rs];
+        rt = CPU->reg_file[wb_instr->rt];
+        // $rt = $rs + Immediate
+        int decimal_rs = binary_to_decimal(rs->data);
+        free(rt->data);
+        rt->data = decimal_to_binary(decimal_rs + wb_instr->immediate, 32);
+        // Si el registro rt estaba ocasionando una dependencia (data hazard), indicar que ya se
+        // satisfizo
+        if (wb_instr->rt == CPU->hazard){
+            CPU->true_dependency = NO;
+            CPU->hazard = -1;
+            // printf("Data Hazard solucionado con %d burbujas\n", CPU->bubbles);
+            CPU->bubbles = 0;
+        }
+    }
+}
+
+
+/**
+ * Identifica si hay 5 NOPs en el pipeline
+ * @param cpu
+ * @return 1 si hay 5 NOPs. 0 en caso contrario
+ */
+int are_there_six_nops(CPU* cpu){
+    if (strcmp(cpu->executing[IF]->name, NOP) == 0 &&
+        strcmp(cpu->executing[ID]->name, NOP) == 0 &&
+        strcmp(cpu->executing[EX1]->name, NOP) == 0 &&
+        strcmp(cpu->executing[EX2]->name, NOP) == 0 &&
+        strcmp(cpu->executing[MEM]->name, NOP) == 0 &&
+        strcmp(cpu->executing[WB]->name, NOP) == 0){
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * Ejecuta las instrucciones almacenadas
+ */
+void run(CPU* CPU){
+    CPU->cc = 0;
+    print_pipeline(CPU);
+    printf("PRESIONE [ENTER] PARA CONTINUAR ...");
+    while (getchar() != '\n');
+    CPU->cc = 1;
+    instruction_fetch(CPU);
+    write_back(CPU);
+    instruction_decode(CPU);
+    ex1(CPU);
+    ex2(CPU);
+    mem(CPU);
+    print_pipeline(CPU);
+    printf("PRESIONE [ENTER] PARA CONTINUAR ...");
+    while (getchar() != '\n');
+    while (are_there_six_nops(CPU) == 0){
+/*        if (CPU->true_dependency == YES) {
+            add_to_pipeline(CPU, CPU->NOP, EX1);
+            CPU->cc += 1;
+            print_pipeline(CPU);
+        }*/
+
+
+        CPU->cc += 1;
+        write_back(CPU);
+        instruction_fetch(CPU);
+        instruction_decode(CPU);
+        ex1(CPU);
+        ex2(CPU);
+        mem(CPU);
+        print_pipeline(CPU);
+
+
+        printf("PRESIONE [ENTER] PARA CONTINUAR ...");
+        while (getchar() != '\n');
+    }
+}
 
 /*
- *
+ * Imprime las instrucciones en ejecucion (Pipeline)
+ */
+void print_pipeline(CPU* cpu){
+    printf("CC: %d -- || ", cpu->cc);
+    print_instr(cpu->executing[IF], cpu->reg_file);
+    printf(" || ");
+    print_instr(cpu->executing[ID], cpu->reg_file);
+    printf(" || ");
+    print_instr(cpu->executing[EX1], cpu->reg_file);
+    printf(" || ");
+    print_instr(cpu->executing[EX2], cpu->reg_file);
+
+    printf(" || ");
+    print_instr(cpu->executing[MEM], cpu->reg_file);
+    printf(" || ");
+    print_instr(cpu->executing[WB], cpu->reg_file);
+    printf(" ||\n ");
+}
+
+/*
+ * Imprime la memoria de instrucciones.
  */
 void print_instr_mem(CPU* cpu){
     Node* current_instr = cpu->instr_memory->first;
     while (current_instr != NULL){
         print_instr((Instruction*)current_instr->data,cpu->reg_file);
+        printf("\n");
         current_instr = current_instr->next;
     }
 }

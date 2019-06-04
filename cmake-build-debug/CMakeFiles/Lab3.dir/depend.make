@@ -19,9 +19,13 @@ CMakeFiles/Lab3.dir/Core/cpu.c.o: ../Core/instr_mem.h
 CMakeFiles/Lab3.dir/Core/cpu.c.o: ../Core/ram.h
 CMakeFiles/Lab3.dir/Core/cpu.c.o: ../Core/register.h
 
+CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Auxiliar/custom_string_ops.h
 CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Auxiliar/linked_list.h
+CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Core/cpu.h
 CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Core/instr_mem.c
 CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Core/instr_mem.h
+CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Core/ram.h
+CMakeFiles/Lab3.dir/Core/instr_mem.c.o: ../Core/register.h
 
 CMakeFiles/Lab3.dir/Core/io.c.o: ../Auxiliar/binary_ops.h
 CMakeFiles/Lab3.dir/Core/io.c.o: ../Auxiliar/custom_string_ops.h

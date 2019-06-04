@@ -27,16 +27,21 @@ struct cpu{
     int hazard;  // Numero del registro pendiente por escribir
     ACTIVE_HAZARD true_dependency;
     Instruction* NOP;
+    int bubbles;
 };
 typedef struct cpu CPU;
 
 CPU* init_cpu();
 void add_to_pipeline(CPU* p, Instruction* instr, int stage);
 void instruction_fetch(CPU* CPU);
-void write_back_and_decode(CPU* CPU);
+void instruction_decode(CPU* CPU);
 void ex1(CPU* CPU);
 void ex2(CPU* CPU);
 void mem(CPU* CPU);
+void write_back(CPU* CPU);
+int are_there_six_nops(CPU* cpu);
+void run(CPU* CPU);
+void print_pipeline(CPU* cpu);
 void print_instr_mem(CPU* cpu);
 void free_cpu(CPU* cpu);
 

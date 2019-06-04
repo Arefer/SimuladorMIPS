@@ -65,6 +65,7 @@ void read_from_ram(Ram* ram){
     } else {  // Si no se encuentra, cargar 0
         // Copiamos el addr
         char* addr = (char*)malloc(sizeof(strlen(ram->addr)+1));
+        strcpy(addr, ram->addr);
         push_to_list(ram->read_data, decimal_to_binary(0, 32), addr);
     }
 }
@@ -74,8 +75,8 @@ void read_from_ram(Ram* ram){
  */
 void free_ram_mem(Ram* ram){
     free_list_and_nodes(ram->data_list, free_string);
-    free(ram->addr);
+    if (ram->addr != NULL) free(ram->addr);
     free_list_and_nodes(ram->read_data, free_string);
-    free(ram->write_data);
+    if (ram->write_data != NULL) free(ram->write_data);
     free(ram);
 }

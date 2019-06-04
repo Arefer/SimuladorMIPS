@@ -20,9 +20,13 @@ CMakeFiles/Lab3.dir/Core/cpu.c.o
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/ram.h
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/register.h
 CMakeFiles/Lab3.dir/Core/instr_mem.c.o
+ /home/kevin/Documents/Organizacion_de_computadores/Lab3/Auxiliar/custom_string_ops.h
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Auxiliar/linked_list.h
+ /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/cpu.h
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/instr_mem.c
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/instr_mem.h
+ /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/ram.h
+ /home/kevin/Documents/Organizacion_de_computadores/Lab3/Core/register.h
 CMakeFiles/Lab3.dir/Core/io.c.o
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Auxiliar/binary_ops.h
  /home/kevin/Documents/Organizacion_de_computadores/Lab3/Auxiliar/custom_string_ops.h

@@ -52,7 +52,7 @@ Instruction* search_by_label(List* instr_mem, char* label){
     Node* cursor = instr_mem->first;
     while (cursor != NULL){
         Instruction* instr = (Instruction*)cursor->data;
-        if (strcmp(instr->label, label) == 0)
+        if (instr->label != NULL && strcmp(instr->label, label) == 0)
             return instr;
         cursor = cursor->next;
     }
@@ -61,32 +61,35 @@ Instruction* search_by_label(List* instr_mem, char* label){
 
 
 /*
- * Imprime una instruccion, mostrando nombres de los registros, en vez de sus numeros
+ * Imprime una instruccion, mostrando nombres de los registros, en vez de sus numeros.
+ * No imprime saltos de linea
  */
 void print_instr(Instruction* instr, Register** reg_file){
     Register* rs;
     Register* rt;
     Register* rd;
-    printf("Linea %d: ", instr->line);
+    // printf("Linea %d: ", instr->line);
     if (instr->type == 'R'){
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
         rd = reg_file[instr->rd];
-        printf("%s %s, %s, %s\n", instr->name, rd->name, rs->name, rt->name);
+        printf("%s %s, %s, %s", instr->name, rd->name, rs->name, rt->name);
     } else if (strcmp(instr->name, LW) == 0 || strcmp(instr->name, SW) == 0){
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
-        printf("%s %s, %d(%s)\n", instr->name, rt->name, instr->immediate, rs->name);
+        printf("%s %s, %d(%s)", instr->name, rt->name, instr->immediate, rs->name);
     } else if (strcmp(instr->name, BNE) == 0 || strcmp(instr->name, BEQ) == 0){
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
-        printf("%s %s, %s, %s\n", instr->name, rt->name, rs->name, instr->j_address);
+        printf("%s %s, %s, %s", instr->name, rt->name, rs->name, instr->j_address);
     } else if (strcmp(instr->name, ADDI) == 0 || strcmp(instr->name, SUBI) == 0) {
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
-        printf("%s %s, %s, %d\n", instr->name, rt->name, rs->name, instr->immediate);
+        printf("%s %s, %s, %d", instr->name, rt->name, rs->name, instr->immediate);
     } else if (instr->type == 'J'){
-        printf("%s %s\n", instr->name, instr->j_address);
+        printf("%s %s", instr->name, instr->j_address);
+    } else if (strcmp(instr->name, NOP) == 0){
+        printf("%s", NOP);
     }
 }
 
