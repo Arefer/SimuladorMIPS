@@ -24,7 +24,7 @@ struct cpu{
     int jump_alu_enabled;
     Ram* ram_memory;
     Instruction** executing;  // 6 Etapas de Pipeline
-    int hazard;  // Numero del registro pendiente por escribir
+    int pending_write;  // Numero del registro pendiente por escribir
     ACTIVE_HAZARD true_dependency;
     Instruction* NOP;
     int bubbles;
@@ -32,16 +32,16 @@ struct cpu{
 typedef struct cpu CPU;
 
 CPU* init_cpu();
-void add_to_pipeline(CPU* p, Instruction* instr, int stage);
+void add_to_pipeline(CPU* cpu, Instruction* instr, int stage);
 void instruction_fetch(CPU* CPU);
-void instruction_decode(CPU* CPU);
+int instruction_decode(CPU* CPU);
 void ex1(CPU* CPU);
-void ex2(CPU* CPU);
+int ex2(CPU* CPU);
 void mem(CPU* CPU);
-void write_back(CPU* CPU);
+int write_back(CPU* CPU);
 int are_there_six_nops(CPU* cpu);
 void run(CPU* CPU);
-void print_pipeline(CPU* cpu);
+void print_pipeline(CPU* cpu, int cell_size);
 void print_instr_mem(CPU* cpu);
 void free_cpu(CPU* cpu);
 

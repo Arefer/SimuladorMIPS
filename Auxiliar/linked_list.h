@@ -28,5 +28,5 @@ void* pop_from_list(List* list);
 void iterate(List* list, void (*f)(void*));
 void* find(List* list, char* id);
 void free_list(List* list);
-void free_list_and_nodes(List* list, void (*custom_data_free)(void*));
+void free_list_and_nodes(List* list, void (*custom_data_free)(void*), int erase_id);
 #endif //LAB3_LINKED_LIST_H

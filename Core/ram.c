@@ -31,16 +31,16 @@ void write_to_ram(Ram* ram){
     // Si no existe, lo agregamos
     if (data == NULL){
         // Copiamos la informacion de write_data
-        char* write_data = (char*)malloc(sizeof(strlen(ram->write_data)+1));
+        char* write_data = (char*)malloc(sizeof(char)*strlen(ram->write_data)+1);
         strcpy(write_data, ram->write_data);
         // Copiamos la informacion de addr
-        char* addr = (char*)malloc(sizeof(strlen(ram->addr)+1));
+        char* addr = (char*)malloc(sizeof(char)*strlen(ram->addr)+1);
         strcpy(addr, ram->addr);
         // Añadimos el dato a la ram
         add_to_list(ram->data_list, write_data, addr);
     } else {  // Si existe, actualizamos su valor
         // Copiamos la informacion de write_data
-        char* write_data = (char*)malloc(sizeof(strlen(ram->write_data)+1));
+        char* write_data = (char*)malloc(sizeof(char)*strlen(ram->write_data)+1);
         strcpy(write_data, ram->write_data);
         free(data);
         data = write_data;
@@ -55,16 +55,16 @@ void read_from_ram(Ram* ram){
     char* data = find(ram->data_list, ram->addr);
     if (data != NULL){
         // Copiamos el dato
-        char* data_copy = (char*)malloc(sizeof(strlen(data)+1));
+        char* data_copy = (char*)malloc(sizeof(char)*strlen(data)+1);
         strcpy(data_copy, data);
         // Copiamos el addr
-        char* addr = (char*)malloc(sizeof(strlen(ram->addr)+1));
+        char* addr = (char*)malloc(sizeof(char)*strlen(data)+1);
         strcpy(addr, ram->addr);
         // Guardamos el dato en read_data
         push_to_list(ram->read_data, data_copy, addr);
     } else {  // Si no se encuentra, cargar 0
         // Copiamos el addr
-        char* addr = (char*)malloc(sizeof(strlen(ram->addr)+1));
+        char* addr = (char*)malloc(sizeof(char)*strlen(data)+1);
         strcpy(addr, ram->addr);
         push_to_list(ram->read_data, decimal_to_binary(0, 32), addr);
     }
@@ -74,9 +74,9 @@ void read_from_ram(Ram* ram){
  * Libera la memoria de la memoria ram
  */
 void free_ram_mem(Ram* ram){
-    free_list_and_nodes(ram->data_list, free_string);
+    free_list_and_nodes(ram->data_list, free_string, 1);
     if (ram->addr != NULL) free(ram->addr);
-    free_list_and_nodes(ram->read_data, free_string);
+    free_list_and_nodes(ram->read_data, free_string, 1);
     if (ram->write_data != NULL) free(ram->write_data);
     free(ram);
 }

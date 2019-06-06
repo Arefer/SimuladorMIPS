@@ -11,20 +11,16 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="40608ae4-6689-43fe-b337-3084e68e6afb" name="Default Changelist" comment="">
+    <list default="true" id="40608ae4-6689-43fe-b337-3084e68e6afb" name="Default Changelist" comment="Simulación testeada con control hazards y data hazards, funcionando.&#10;Falta notificar cuando una prediccion (branch not taken) se cumple.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auxiliar/linked_list.c" beforeDir="false" afterPath="$PROJECT_DIR$/Auxiliar/linked_list.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Auxiliar/linked_list.h" beforeDir="false" afterPath="$PROJECT_DIR$/Auxiliar/linked_list.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/cpu.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/cpu.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/cpu.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/cpu.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/instr_mem.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/instr_mem.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Core/instr_mem.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/instr_mem.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/io.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/io.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/register.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/register.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Core/register.h" beforeDir="false" afterPath="$PROJECT_DIR$/Core/register.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab3.dir/Core/cpu.c.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab3.dir/Core/instr_mem.c.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab3.dir/Core/io.c.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Lab3.dir/main.c.o" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Lab3" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Core/ram.c" beforeDir="false" afterPath="$PROJECT_DIR$/Core/ram.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.c" beforeDir="false" afterPath="$PROJECT_DIR$/main.c" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -39,14 +35,17 @@
   </component>
   <component name="ExecutionTargetManager" SELECTED_TARGET="CMakeBuildProfile:Debug" />
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.4643312">
+    <splitter split-orientation="horizontal" split-proportion="0.68730056">
       <split-first>
-        <leaf>
-          <file pinned="false" current-in-tab="true">
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/io.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="90">
-                  <caret line="6" column="18" lean-forward="true" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+                <state relative-caret-position="419">
+                  <caret line="98" column="61" selection-start-line="98" selection-start-column="61" selection-end-line="98" selection-end-column="61" />
+                  <folding>
+                    <element signature="e#0#35#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -54,8 +53,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/instr_mem.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="559">
-                  <caret line="88" column="57" selection-start-line="88" selection-start-column="57" selection-end-line="88" selection-end-column="57" />
+                <state relative-caret-position="244">
+                  <caret line="111" column="33" lean-forward="true" selection-start-line="111" selection-start-column="33" selection-end-line="111" selection-end-column="33" />
                   <folding>
                     <element signature="e#40#62#0" expanded="true" />
                   </folding>
@@ -63,21 +62,27 @@
               </provider>
             </entry>
           </file>
-          <file pinned="false" current-in-tab="false">
+          <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Core/cpu.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="596">
-                  <caret line="267" column="2" selection-start-line="267" selection-start-column="2" selection-end-line="267" selection-end-column="2" />
+                <state relative-caret-position="73">
+                  <caret line="218" column="31" lean-forward="true" selection-start-line="218" selection-start-column="31" selection-end-line="218" selection-end-column="31" />
                   <folding>
                     <element signature="e#40#56#0" expanded="true" />
-                    <element signature="e#562#905#0" />
-                    <element signature="e#1067#1420#0" />
-                    <element signature="e#1769#5047#0" />
-                    <element signature="e#2208#2577#1" />
-                    <element signature="e#7401#7423#1" />
-                    <element signature="e#10517#10601#0" />
-                    <element signature="e#10998#11271#0" />
+                    <element signature="e#239#867#0" />
+                    <element signature="e#1155#1413#0" />
+                    <element signature="e#12438#15828#0" />
+                    <element signature="e#13278#13790#0" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/cmake-build-debug/1.in">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="135">
+                  <caret line="9" column="20" lean-forward="true" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
                 </state>
               </provider>
             </entry>
@@ -85,13 +90,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/register.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="309">
-                  <caret line="103" selection-start-line="103" selection-end-line="103" />
+                <state relative-caret-position="625">
+                  <caret line="88" column="65" lean-forward="true" selection-start-line="88" selection-start-column="65" selection-end-line="88" selection-end-column="65" />
                   <folding>
                     <element signature="e#40#61#0" expanded="true" />
-                    <element signature="e#386#8121#0" />
-                    <element signature="e#8716#8886#0" />
-                    <element signature="e#8888#9133#0" />
                   </folding>
                 </state>
               </provider>
@@ -100,8 +102,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/ram.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="660">
-                  <caret line="44" column="19" lean-forward="true" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
+                <state relative-caret-position="235">
+                  <caret line="45" column="8" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="8" />
                   <folding>
                     <element signature="e#40#56#0" expanded="true" />
                   </folding>
@@ -112,8 +114,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Auxiliar/custom_string_ops.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="760">
-                  <caret line="100" column="17" lean-forward="true" selection-start-line="100" selection-start-column="17" selection-end-line="100" selection-end-column="17" />
+                <state relative-caret-position="174">
+                  <caret line="100" column="13" lean-forward="true" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
                   <folding>
                     <element signature="e#40#70#0" expanded="true" />
                   </folding>
@@ -122,10 +124,22 @@
             </entry>
           </file>
           <file pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/Auxiliar/linked_list.c">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="259">
+                  <caret line="118" column="32" lean-forward="true" selection-start-line="118" selection-start-column="32" selection-end-line="118" selection-end-column="32" />
+                  <folding>
+                    <element signature="e#40#64#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/main.c">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="360">
-                  <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
+                <state relative-caret-position="388">
+                  <caret line="31" column="161" selection-start-line="31" selection-start-column="161" selection-end-line="31" selection-end-column="161" />
                   <folding>
                     <element signature="e#0#18#0" expanded="true" />
                   </folding>
@@ -136,7 +150,7 @@
         </leaf>
       </split-first>
       <split-second>
-        <leaf>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/io.h">
               <provider selected="true" editor-type-id="text-editor">
@@ -150,7 +164,7 @@
             <entry file="file://$PROJECT_DIR$/Core/ram.h">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="285">
-                  <caret line="19" column="20" lean-forward="true" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+                  <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
                 </state>
               </provider>
             </entry>
@@ -158,8 +172,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/Core/cpu.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="255">
-                  <caret line="17" selection-start-line="17" selection-end-line="17" />
+                <state relative-caret-position="493">
+                  <caret line="43" column="45" lean-forward="true" selection-start-line="43" selection-start-column="45" selection-end-line="43" selection-end-column="45" />
                   <folding>
                     <element signature="e#40#61#0" expanded="true" />
                   </folding>
@@ -170,8 +184,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Auxiliar/linked_list.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="390">
-                  <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+                <state relative-caret-position="450">
+                  <caret line="30" column="82" selection-start-line="30" selection-start-column="82" selection-end-line="30" selection-end-column="82" />
                 </state>
               </provider>
             </entry>
@@ -179,8 +193,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/instr_mem.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="491">
-                  <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
+                <state relative-caret-position="533">
+                  <caret line="43" column="63" selection-start-line="43" selection-start-column="63" selection-end-line="43" selection-end-column="63" />
                   <folding>
                     <element signature="e#91#127#0" expanded="true" />
                   </folding>
@@ -191,20 +205,11 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/Core/register.h">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="780">
-                  <caret line="85" column="53" lean-forward="true" selection-start-line="85" selection-start-column="53" selection-end-line="85" selection-end-column="53" />
+                <state relative-caret-position="1275">
+                  <caret line="85" column="53" selection-start-line="85" selection-start-column="53" selection-end-line="85" selection-end-column="53" />
                   <folding>
                     <element signature="e#88#110#1" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/cmake-build-debug/test">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="15">
-                  <caret line="1" column="38" lean-forward="true" selection-start-line="1" selection-start-column="38" selection-end-line="1" selection-end-column="38" />
                 </state>
               </provider>
             </entry>
@@ -233,6 +238,10 @@
       <find>splitted</find>
       <find>puede haber</find>
       <find>memcpy</find>
+      <find>IF</find>
+      <find>pending_write</find>
+      <find>sizeof</find>
+      <find>structural</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -264,30 +273,31 @@
         <option value="$PROJECT_DIR$/pipeline.h" />
         <option value="$PROJECT_DIR$/Core/pipeline.h" />
         <option value="$PROJECT_DIR$/Core/pipeline.c" />
-        <option value="$PROJECT_DIR$/Auxiliar/linked_list.h" />
-        <option value="$PROJECT_DIR$/Auxiliar/linked_list.c" />
         <option value="$PROJECT_DIR$/Auxiliar/custom_string_ops.h" />
         <option value="$PROJECT_DIR$/cmake-build-debug/test" />
         <option value="$PROJECT_DIR$/Core/ram.h" />
-        <option value="$PROJECT_DIR$/Core/ram.c" />
         <option value="$PROJECT_DIR$/Auxiliar/custom_string_ops.c" />
         <option value="$PROJECT_DIR$/Core/register.h" />
         <option value="$PROJECT_DIR$/Core/register.c" />
         <option value="$PROJECT_DIR$/Core/io.c" />
-        <option value="$PROJECT_DIR$/Core/instr_mem.h" />
-        <option value="$PROJECT_DIR$/Core/instr_mem.c" />
+        <option value="$PROJECT_DIR$/Auxiliar/linked_list.h" />
+        <option value="$PROJECT_DIR$/Core/ram.c" />
+        <option value="$PROJECT_DIR$/Auxiliar/linked_list.c" />
+        <option value="$PROJECT_DIR$/cmake-build-debug/1.in" />
         <option value="$PROJECT_DIR$/main.c" />
-        <option value="$PROJECT_DIR$/Core/cpu.c" />
+        <option value="$PROJECT_DIR$/Core/instr_mem.h" />
         <option value="$PROJECT_DIR$/Core/cpu.h" />
+        <option value="$PROJECT_DIR$/Core/instr_mem.c" />
+        <option value="$PROJECT_DIR$/Core/cpu.c" />
       </list>
     </option>
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="153" />
-    <option name="y" value="27" />
+    <option name="x" value="151" />
+    <option name="y" value="71" />
     <option name="width" value="1675" />
-    <option name="height" value="971" />
+    <option name="height" value="940" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -295,7 +305,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -322,6 +331,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -376,7 +386,8 @@
       <workItem from="1558382151210" duration="5056000" />
       <workItem from="1558834014172" duration="1548000" />
       <workItem from="1558836837494" duration="1468000" />
-      <workItem from="1559416190816" duration="49938000" />
+      <workItem from="1559416190816" duration="65497000" />
+      <workItem from="1559776636706" duration="35581000" />
     </task>
     <task id="LOCAL-00001" summary="Lectura de instrucciones y definición de funciones principales">
       <created>1558396271725</created>
@@ -406,31 +417,44 @@
       <option name="project" value="LOCAL" />
       <updated>1559536131432</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Cambiada la representacion de registros en una instruccion para mayor eficiencia.">
+      <created>1559546139457</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1559546139457</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Implementada la simulacion. Probada con data hazards, obteniendo errores menores.&#10;Falta probar Structural hazards.">
+      <created>1559632129356</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1559632129356</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="103190000" />
+    <option name="totallyTimeSpent" value="154330000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="47" y="27" width="1873" height="1053" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14066777" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1423098" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.24645583" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3991276" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.6848419" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.23336968" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.28244275" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" />
-      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49972633" weight="0.24209379" />
+      <window_info anchor="bottom" id="Messages" order="8" sideWeight="0.49972633" weight="0.14285715" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.25517994" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50027364" side_tool="true" weight="0.3297414" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3293348" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.14830971" />
       <window_info anchor="bottom" id="CMake" order="12" sideWeight="0.49972633" weight="0.30926725" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -468,18 +492,70 @@
     <MESSAGE value="Actualización de estructuras" />
     <MESSAGE value="Funciones del pipeline finalizadas (sin testear)" />
     <MESSAGE value="Pequeño fix en funcion free_string" />
-    <option name="LAST_COMMIT_MESSAGE" value="Pequeño fix en funcion free_string" />
+    <MESSAGE value="Cambiada la representacion de registros en una instruccion para mayor eficiencia." />
+    <MESSAGE value="Implementada la simulacion. Probada con data hazards, obteniendo errores menores.&#10;Falta probar Structural hazards." />
+    <MESSAGE value="Simulación testeada con control hazards y data hazards, funcionando.&#10;Falta notificar cuando una prediccion (branch not taken) se cumple." />
+    <option name="LAST_COMMIT_MESSAGE" value="Simulación testeada con control hazards y data hazards, funcionando.&#10;Falta notificar cuando una prediccion (branch not taken) se cumple." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
           <url>file://$PROJECT_DIR$/main.c</url>
-          <line>26</line>
-          <option name="timeStamp" value="2" />
+          <line>35</line>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="debuggerHistoryManager">
+    <expressions id="evaluateExpression">
+      <expression>
+        <expression-string>(Node*)cursor</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(char*)(Node*)cursor-&gt;data</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>(char*)cpu-&gt;ram_memory-&gt;data_list-&gt;first-&gt;data</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>CPU-&gt;executing[0]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>CPU-&gt;executing[1]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>CPU-&gt;executing[5]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>CPU-&gt;executing[6]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>CPU-&gt;executing[4]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>CPU-&gt;executing[3]</expression-string>
+        <language-id>ObjectiveC</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+    </expressions>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/cmake-build-debug/Lab3" />
@@ -508,16 +584,7 @@
     <entry file="file://$PROJECT_DIR$/Core/frees.h" />
     <entry file="file://$PROJECT_DIR$/Auxiliar/printers.c" />
     <entry file="file://$PROJECT_DIR$/Auxiliar/printers.h" />
-    <entry file="file://$PROJECT_DIR$/Core/structs.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#87#123#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/structs.h" />
     <entry file="file://$PROJECT_DIR$/Auxiliar/binary_ops.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
@@ -525,26 +592,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/pipeline.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
-          <folding>
-            <element signature="e#40#61#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/pipeline.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" selection-start-line="11" selection-end-line="11" />
-          <folding>
-            <element signature="e#89#122#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/pipeline.c" />
+    <entry file="file://$PROJECT_DIR$/Core/pipeline.h" />
     <entry file="file:///usr/include/string.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="296">
@@ -552,114 +601,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Auxiliar/linked_list.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="32" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/io.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="12" selection-start-line="12" selection-end-line="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Auxiliar/custom_string_ops.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="150">
           <caret line="10" column="26" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="26" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Auxiliar/custom_string_ops.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="760">
-          <caret line="100" column="17" lean-forward="true" selection-start-line="100" selection-start-column="17" selection-end-line="100" selection-end-column="17" />
-          <folding>
-            <element signature="e#40#70#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/cmake-build-debug/test">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="38" lean-forward="true" selection-start-line="1" selection-start-column="38" selection-end-line="1" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Auxiliar/linked_list.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="400">
-          <caret line="48" column="5" selection-start-line="48" selection-start-column="5" selection-end-line="48" selection-end-column="5" />
-          <folding>
-            <element signature="e#40#64#0" expanded="true" />
-            <element signature="e#837#949#0" />
-            <element signature="e#1223#1350#0" />
-            <element signature="e#1346#1580#0" />
-            <element signature="e#1044#1112#0" />
-            <element signature="e#1108#1374#0" />
-            <element signature="e#1312#1662#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/instr_mem.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="491">
-          <caret line="42" column="16" selection-start-line="42" selection-start-column="16" selection-end-line="42" selection-end-column="16" />
-          <folding>
-            <element signature="e#91#127#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="24" column="19" selection-start-line="24" selection-start-column="19" selection-end-line="24" selection-end-column="19" />
-          <folding>
-            <element signature="e#0#18#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/ram.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="19" column="20" lean-forward="true" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/instr_mem.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="559">
-          <caret line="88" column="57" selection-start-line="88" selection-start-column="57" selection-end-line="88" selection-end-column="57" />
-          <folding>
-            <element signature="e#40#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/ram.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="44" column="19" lean-forward="true" selection-start-line="44" selection-start-column="19" selection-end-line="44" selection-end-column="19" />
-          <folding>
-            <element signature="e#40#56#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Core/register.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="780">
-          <caret line="85" column="53" lean-forward="true" selection-start-line="85" selection-start-column="53" selection-end-line="85" selection-end-column="53" />
-          <folding>
-            <element signature="e#88#110#1" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -680,50 +625,152 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/cpu.h">
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/test">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" selection-start-line="17" selection-end-line="17" />
+        <state relative-caret-position="165">
+          <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/io.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/register.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1275">
+          <caret line="85" column="53" selection-start-line="85" selection-start-column="53" selection-end-line="85" selection-end-column="53" />
           <folding>
-            <element signature="e#40#61#0" expanded="true" />
+            <element signature="e#88#110#1" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Core/cpu.c">
+    <entry file="file://$PROJECT_DIR$/Core/ram.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="596">
-          <caret line="267" column="2" selection-start-line="267" selection-start-column="2" selection-end-line="267" selection-end-column="2" />
+        <state relative-caret-position="285">
+          <caret line="19" column="20" selection-start-line="19" selection-start-column="20" selection-end-line="19" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Auxiliar/custom_string_ops.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="100" column="13" lean-forward="true" selection-start-line="100" selection-start-column="13" selection-end-line="100" selection-end-column="13" />
           <folding>
-            <element signature="e#40#56#0" expanded="true" />
-            <element signature="e#562#905#0" />
-            <element signature="e#1067#1420#0" />
-            <element signature="e#1769#5047#0" />
-            <element signature="e#2208#2577#1" />
-            <element signature="e#7401#7423#1" />
-            <element signature="e#10517#10601#0" />
-            <element signature="e#10998#11271#0" />
+            <element signature="e#40#70#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Core/register.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="309">
-          <caret line="103" selection-start-line="103" selection-end-line="103" />
+        <state relative-caret-position="625">
+          <caret line="88" column="65" lean-forward="true" selection-start-line="88" selection-start-column="65" selection-end-line="88" selection-end-column="65" />
           <folding>
             <element signature="e#40#61#0" expanded="true" />
-            <element signature="e#386#8121#0" />
-            <element signature="e#8716#8886#0" />
-            <element signature="e#8888#9133#0" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Core/io.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="18" lean-forward="true" selection-start-line="6" selection-start-column="18" selection-end-line="6" selection-end-column="18" />
+        <state relative-caret-position="419">
+          <caret line="98" column="61" selection-start-line="98" selection-start-column="61" selection-end-line="98" selection-end-column="61" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Auxiliar/linked_list.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="259">
+          <caret line="118" column="32" lean-forward="true" selection-start-line="118" selection-start-column="32" selection-end-line="118" selection-end-column="32" />
+          <folding>
+            <element signature="e#40#64#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Auxiliar/linked_list.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="30" column="82" selection-start-line="30" selection-start-column="82" selection-end-line="30" selection-end-column="82" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/ram.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="45" column="8" selection-start-line="45" selection-start-column="8" selection-end-line="45" selection-end-column="8" />
+          <folding>
+            <element signature="e#40#56#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="388">
+          <caret line="31" column="161" selection-start-line="31" selection-start-column="161" selection-end-line="31" selection-end-column="161" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/instr_mem.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="533">
+          <caret line="43" column="63" selection-start-line="43" selection-start-column="63" selection-end-line="43" selection-end-column="63" />
+          <folding>
+            <element signature="e#91#127#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/cpu.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="43" column="45" lean-forward="true" selection-start-line="43" selection-start-column="45" selection-end-line="43" selection-end-column="45" />
+          <folding>
+            <element signature="e#40#61#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/instr_mem.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="111" column="33" lean-forward="true" selection-start-line="111" selection-start-column="33" selection-end-line="111" selection-end-column="33" />
+          <folding>
+            <element signature="e#40#62#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/cmake-build-debug/1.in">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="135">
+          <caret line="9" column="20" lean-forward="true" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Core/cpu.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="73">
+          <caret line="218" column="31" lean-forward="true" selection-start-line="218" selection-start-column="31" selection-end-line="218" selection-end-column="31" />
+          <folding>
+            <element signature="e#40#56#0" expanded="true" />
+            <element signature="e#239#867#0" />
+            <element signature="e#1155#1413#0" />
+            <element signature="e#12438#15828#0" />
+            <element signature="e#13278#13790#0" />
+          </folding>
         </state>
       </provider>
     </entry>

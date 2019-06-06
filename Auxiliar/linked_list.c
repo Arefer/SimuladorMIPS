@@ -114,14 +114,18 @@ void free_list(List* list){
     free(list);
 }
 
-/*
- * Libera la lista enlazada inclyendo la informacion de los nodos
+/**
+ * Libera la lista enlazada incluyendo la información de los nodos
+ * @param list La lista enlazada
+ * @param custom_data_free: funcion que libera Node->data
+ * @param erase_id: indica si se debe hacer un free al id (1 = free, otro numero = no free)
  */
-void free_list_and_nodes(List* list, void (*custom_data_free)(void*)){
+void free_list_and_nodes(List* list, void (*custom_data_free)(void*), int erase_id){
     Node* cursor = list->first;
     while (cursor != NULL){
         Node* next = cursor->next;
         (*custom_data_free)(cursor->data);
+        if (erase_id == 1) free(cursor->id);
         free(cursor);
         cursor = next;
     }
