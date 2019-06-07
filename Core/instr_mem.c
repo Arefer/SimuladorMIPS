@@ -64,7 +64,7 @@ Instruction* search_by_label(List* instr_mem, char* label){
  * Imprime una instruccion, mostrando nombres de los registros, en vez de sus numeros.
  * No imprime saltos de linea
  */
-int print_instr(Instruction* instr, Register** reg_file){
+void print_instr(Instruction* instr, Register** reg_file){
     Register* rs;
     Register* rt;
     Register* rd;

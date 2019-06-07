@@ -40,7 +40,7 @@ typedef struct instruction Instruction;
 Instruction* init_instr();
 Instruction* init_nop_instr();
 Instruction* search_by_label(List* instr_mem, char* label);
-int print_instr(Instruction* instr, Register** reg_file);
+void print_instr(Instruction* instr, Register** reg_file);
 char* instr_to_string(Instruction* instr, Register** reg_file);
 void free_instr(void* instruction);
 #endif //LAB3_INSTR_MEM_H
