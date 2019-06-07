@@ -1,1 +1,0 @@
-/usr/bin/gcc -g   CMakeFiles/Lab3.dir/main.c.o CMakeFiles/Lab3.dir/Core/io.c.o CMakeFiles/Lab3.dir/Auxiliar/binary_ops.c.o CMakeFiles/Lab3.dir/Auxiliar/custom_string_ops.c.o CMakeFiles/Lab3.dir/Core/register.c.o CMakeFiles/Lab3.dir/Core/ram.c.o CMakeFiles/Lab3.dir/Core/instr_mem.c.o CMakeFiles/Lab3.dir/Auxiliar/linked_list.c.o CMakeFiles/Lab3.dir/Core/cpu.c.o  -o Lab3 -lm 

@@ -1,3 +1,0 @@
-/home/kevin/Documents/Organizacion_de_computadores/Lab3/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/kevin/Documents/Organizacion_de_computadores/Lab3/cmake-build-debug/CMakeFiles/Lab3.dir
-/home/kevin/Documents/Organizacion_de_computadores/Lab3/cmake-build-debug/CMakeFiles/edit_cache.dir
