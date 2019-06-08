@@ -69,7 +69,7 @@ void print_instr(Instruction* instr, Register** reg_file){
     Register* rt;
     Register* rd;
     char* result = (char*)malloc(sizeof(char)*300);
-    // printf("Linea %d: ", instr->line);
+    printf("%d: ", instr->line);
     if (instr->type == 'R'){
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
@@ -83,7 +83,7 @@ void print_instr(Instruction* instr, Register** reg_file){
     } else if (strcmp(instr->name, BNE) == 0 || strcmp(instr->name, BEQ) == 0){
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
-        printf("%s %s, %s, %s", instr->name, rt->name, rs->name, instr->j_address);
+        printf("%s %s, %s, %s", instr->name, rs->name, rt->name, instr->j_address);
     } else if (strcmp(instr->name, ADDI) == 0 || strcmp(instr->name, SUBI) == 0) {
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
@@ -123,8 +123,8 @@ char* instr_to_string(Instruction* instr, Register** reg_file){
     } else if (strcmp(instr->name, BNE) == 0 || strcmp(instr->name, BEQ) == 0){
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];
-        result = (char*)malloc(sizeof(char)*(strlen(instr->name)+strlen(rt->name)+strlen(rs->name)+strlen(instr->j_address)+6));
-        sprintf(result, "%s %s, %s, %s", instr->name, rt->name, rs->name, instr->j_address);
+        result = (char*)malloc(sizeof(char)*(strlen(instr->name)+strlen(rs->name)+strlen(rt->name)+strlen(instr->j_address)+6));
+        sprintf(result, "%s %s, %s, %s", instr->name, rs->name, rt->name, instr->j_address);
     } else if (strcmp(instr->name, ADDI) == 0 || strcmp(instr->name, SUBI) == 0) {
         rs = reg_file[instr->rs];
         rt = reg_file[instr->rt];

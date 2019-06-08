@@ -24,14 +24,14 @@ extern const char* SW;
 
 struct instruction{
     int line;
-    char* address;  // 32 Bits
+    char* address;               // 32 Bits
     const char* name;
     char type;
     int rs;
     int rt;
     int rd;
-    int immediate;  // Tipo I
-    char* j_address;  // Address de instruccion "j" y immediate de instrucciones "beq" y "bne"
+    int immediate;               // Tipo I
+    char* j_address;             // Address de instruccion "j" y immediate de instrucciones "beq" y "bne"
     char* label;
 };
 typedef struct instruction Instruction;

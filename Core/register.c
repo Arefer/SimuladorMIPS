@@ -106,7 +106,7 @@ int search_register(Register** reg_file, char* name){
         }
         i++;
     }
-    return NULL;
+    return 0;
 }
 
 /*

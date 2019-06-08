@@ -411,6 +411,10 @@ int are_there_six_nops(CPU* cpu){
  * Ejecuta las instrucciones almacenadas
  */
 void run(CPU* CPU){
+    FILE* f_riesgos = fopen("RIESGOS_DETECTADOS.txt", "wr");
+    FILE* f_soluciones = fopen("SOLUCION_RIESGOS.txt", "wr");
+    int riesgos = 1;
+    int solucionados = 1;
     CPU->cc = 0;
     //print_pipeline(CPU);
     //printf("PRESIONE [ENTER] PARA CONTINUAR ...");
@@ -425,6 +429,8 @@ void run(CPU* CPU){
     print_pipeline(CPU, 24);
     if (strcmp(CPU->executing[IF]->name, BEQ) == 0 || strcmp(CPU->executing[IF]->name, BNE) == 0){
         printf(" WARNING: Control hazard detectado. Linea:%d, CC:%d\n", CPU->executing[IF]->line, CPU->cc);
+        fprintf(f_riesgos, "%d- Riesgo de control. Linea de instruccion: %d ; CC : %d\n", riesgos, CPU->executing[IF]->line, CPU->cc);
+        riesgos += 1;
     } else {
         printf("\n");
     }
@@ -445,6 +451,8 @@ void run(CPU* CPU){
         if (data_hazard == 1){
             print_pipeline(CPU, 24);
             printf(" WARNING: Data hazard detectado. Linea:%d, CC:%d\n", CPU->executing[ID]->line, CPU->cc);
+            fprintf(f_riesgos, "%d- Riesgo de datos. Linea de instruccion: %d ; CC : %d\n", riesgos, CPU->executing[ID]->line, CPU->cc);
+            riesgos += 1;
             printf("+%.*s", 7, "----------");
             printf("+%.*s", 24, "-------------------------------------------------");
             printf("+%.*s", 24, "-------------------------------------------------");
@@ -470,26 +478,37 @@ void run(CPU* CPU){
         int new_line_printed = 0;
         if (strcmp(CPU->executing[IF]->name, BEQ) == 0 || strcmp(CPU->executing[IF]->name, BNE) == 0){
             printf(" WARNING: Control hazard detectado. Linea:%d, CC:%d\n", CPU->executing[IF]->line, CPU->cc);
+            fprintf(f_riesgos, "%d- Riesgo de control. Linea de instruccion: %d ; CC : %d\n", riesgos, CPU->executing[IF]->line, CPU->cc);
+            riesgos += 1;
             new_line_printed = 1;
         }
 
         if (bubbles_needed != 0){
             printf(" Data hazard solucionado con %d burbujas\n", bubbles_needed);
+            fprintf(f_soluciones, "%d- Data hazard solucionado con %d burbujas\n", solucionados, bubbles_needed);
+            solucionados += 1;
             new_line_printed = 1;
         }
 
         if (branch_taken == 1){
             if (CPU->bubbles > 0){
                 printf(" Data hazard solucionado con %d burbuja(s). Se realizó un salto", CPU->bubbles);
+                fprintf(f_soluciones, "%d- Data hazard solucionado con %d burbuja(s). Se realizó un salto\n", solucionados, CPU->bubbles);
+                solucionados += 1;
                 CPU->bubbles = 0;
             }
             if (strcmp(CPU->executing[EX2]->name, J) != 0) {
                 printf(" BRANCH TAKEN, se agregaron 3 burbujas para solucionar el Control hazard\n");
+                fprintf(f_soluciones, "%d- BRANCH TAKEN, se agregaron 3 burbujas para solucionar el Control hazard\n", solucionados);
+                solucionados +=1 ;
                 new_line_printed = 1;
             }
         }
         if (branch_taken == 0){
             if (strcmp(CPU->executing[EX2]->name, BEQ) == 0 || strcmp(CPU->executing[EX2]->name, BNE) == 0){
+                fprintf(f_soluciones, "%d- No fue necesario agregar burbujas. Se cumplio la prediccion BRANCH NOT TAKEN\n", solucionados);
+                solucionados += 1;
+
                 printf(" No fue necesario agregar burbujas. Se cumplio la prediccion BRANCH NOT TAKEN\n");
                 new_line_printed = 1;
             }
@@ -505,10 +524,11 @@ void run(CPU* CPU){
         printf("+%.*s+\n", 24, "-------------------------------------------------");
 
 
-
         //printf("PRESIONE [ENTER] PARA CONTINUAR ...");
         //while (getchar() != '\n');
     }
+    fclose(f_soluciones);
+    fclose(f_riesgos);
 }
 
 /*

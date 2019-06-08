@@ -74,7 +74,7 @@ extern const char* ra;
 
 struct regist{
     const char* name;
-    char* data;  // 32 Bits
+    char* data;       // 32 Bits
 };
 typedef struct regist Register;
 

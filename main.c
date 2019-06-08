@@ -9,7 +9,7 @@
 #include "Auxiliar/binary_ops.h"
 
 
-int main() {
+int main(int argc, char *argv[]) {
     printf("#############################################################################################\n");
     printf("#############################################################################################\n");
     printf("######  **** ** *** *** ** ** **     ****  ***   ***** *****    *** *** ** ****  ****  ######\n");
@@ -22,7 +22,7 @@ int main() {
 
     CPU* cpu = init_cpu();
     printf("\n\nLEYENDO ARCHIVO ...\n\n");
-    read_source_code("1.in", cpu);
+    read_source_code(argv[1], cpu);
     print_instr_mem(cpu);
     printf("\n%d INSTRUCCIONES LEIDAS\n\n", cpu->instr_memory->length);
 
@@ -33,6 +33,9 @@ int main() {
     printf("+-------+------------------------+------------------------+------------------------+------------------------+------------------------+------------------------+\n");
 
     run(cpu);
+    printf("Archivo [RIESGOS_DETECTADOS.txt] escrito correctamente\n");
+    printf("Archivo [SOLUCION_RIESGOS.txt] escrito correctamente\n");
+    write_registers("REGISTROS.txt", cpu);
     free_cpu(cpu);
     return 0;
 }

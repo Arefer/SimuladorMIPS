@@ -10,21 +10,21 @@
 #ifndef LAB3_CPU_H
 #define LAB3_CPU_H
 
+typedef enum {NO, YES} ACTIVE_HAZARD;
 // Etapas de pipeline clásico, a excepción de EX, que se divide en dos.
 // EX1 es donde opera la ALU principal.
 // EX2 es donde opera la ALU que calcula la direccion de un salto
 enum stages{IF, ID, EX1, EX2, MEM, WB};
-typedef enum {NO, YES} ACTIVE_HAZARD;
 
 struct cpu{
-    int cc;  // Clock count
-    char* PC;  // Program Counter
+    int cc;                       // Clock count
+    char* PC;                     // Program Counter
     List* instr_memory;
     Register** reg_file;
     int jump_alu_enabled;
     Ram* ram_memory;
-    Instruction** executing;  // 6 Etapas de Pipeline
-    int pending_write;  // Numero del registro pendiente por escribir
+    Instruction** executing;      // 6 Etapas de Pipeline
+    int pending_write;            // Numero del registro pendiente por escribir
     ACTIVE_HAZARD true_dependency;
     Instruction* NOP;
     int bubbles;

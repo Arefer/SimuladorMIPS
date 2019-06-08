@@ -300,6 +300,8 @@ void read_source_code(char* filePath, CPU* cpu){
             free(aux);
             add_to_list(cpu->instr_memory, instr, instr->address);
         }
+        if (fgetc(f) == EOF) break;
+        fseek( f, -1, SEEK_CUR );
         if (fgetc(f) == '\n') {
             line_number += 1;
         }
@@ -312,3 +314,25 @@ void read_source_code(char* filePath, CPU* cpu){
     fclose(f);
 }
 
+/**
+ * Escribe los valores de los registros en el momento en que es llamada.
+ * @param path ruta del archivo a esribir
+ * @param cpu procesador que contiene los registros
+ */
+void write_registers(char* path, CPU* cpu){
+    FILE* f = fopen(path, "wr");
+    if (f == NULL){
+        printf("Error al escribir el archivo\n");
+        exit(-1);
+    }
+    // Iterar los registros y escribirlos
+    int i = 0;
+    while (i < 32){
+        Register* r = cpu->reg_file[i];
+        int valor = binary_to_decimal(r->data);
+        fprintf(f, "%s=%d\n", r->name, valor);
+        i++;
+    }
+    printf("Archivo [%s] escrito correctamente\n", path);
+    fclose(f);
+}

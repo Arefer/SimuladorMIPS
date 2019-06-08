@@ -1,0 +1,10 @@
+addi $s0, $zero, 5
+addi $t1, $zero, 0
+
+while:
+    beq $t1, $s0, exit_while
+    addi $t1, $t1, 1
+    j while
+
+exit_while:
+    addi $t1, $t1, 1

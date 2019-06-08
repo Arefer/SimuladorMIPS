@@ -9,9 +9,9 @@
 
 
 struct ram_mem{
-    List* data_list;  // Lista enlazada de datos de 32 Bits
-    char* addr;  // 32 Bits
-    List* read_data;  // Cola de datos de 32 Bits
+    List* data_list;   // Lista enlazada de datos de 32 Bits
+    char* addr;        // 32 Bits
+    List* read_data;   // Cola de datos de 32 Bits
     char* write_data;  // 32 Bits
 };
 typedef struct ram_mem Ram;
